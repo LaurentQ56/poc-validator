@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace POCIterator\Validator\UseCases\CreateEntity;
+namespace POCValidator\Validator\UseCases\CreateEntity;
 
-use POCIterator\Validator\Entities\Entity;
-use POCIterator\Validator\EntityValidator;
+use POCValidator\Validator\Entities\Entity;
+use POCValidator\Validator\EntityValidator;
 
 final class CreateEntity
 {
@@ -21,16 +21,17 @@ final class CreateEntity
         CreateEntityPresenter $createEntityPresenter
     ): void
     {
-        try {
-            $entity = Entity::create(
-                $createEntityRequest->name(),
-                $createEntityRequest->streetNumber(),
-                $createEntityRequest->postalCode()
-            );
+        $entity = Entity::create(
+            $createEntityRequest->name(),
+            $createEntityRequest->streetNumber(),
+            $createEntityRequest->postalCode()
+        );
 
-            $this->entityValidator->validate($entity);
-        } catch (\Exception $exception) {
-            $createEntityPresenter->addError($exception);
+        $errors = $this->entityValidator->validate($entity);
+
+        if (!empty($errors)) {
+            $createEntityPresenter->addError($errors);
         }
+        $createEntityPresenter->present(new CreateEntityResponse($entity));
     }
 }

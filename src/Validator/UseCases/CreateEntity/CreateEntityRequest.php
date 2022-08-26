@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace POCIterator\Validator\UseCases\CreateEntity;
+namespace POCValidator\Validator\UseCases\CreateEntity;
 
 interface CreateEntityRequest
 {

@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace POCIterator\Validator;
+namespace POCValidator\Validator;
 
-use POCIterator\Validator\Contraints\PropertyConstraint;
+use POCValidator\Validator\Contraints\PropertyConstraint;
 
 final class EntityValidator implements Validator
 {
-    private object $entity;
     private PropertyConstraint $propertyConstraint;
 
     public function __construct(PropertyConstraint $propertyConstraint)
@@ -16,21 +15,26 @@ final class EntityValidator implements Validator
         $this->propertyConstraint = $propertyConstraint;
     }
 
-    public function validate(object $entity): void
+    public function validate(object $entity): array
     {
-        $this->entity = $entity;
         $errors = [];
-        $namespace = $this->getCallingClass();
+        $namespace = get_class($entity);
         $filename = ucfirst(array_reverse(explode('\\', $namespace))[0]);
         $constraintsConfig = $this->parseData($namespace, $filename);
 
         foreach ($constraintsConfig['properties'] as $property) {
             $propertyPath = $property['name'];
             $constraints = $property['constraints'];
-            var_dump($constraints);
-            // $this->propertyConstraint();
+            foreach ($constraints as $constraint) {
+                $error = $this->propertyConstraint->validate($constraint['name'], $constraint['value'], $propertyPath, $entity->$propertyPath());
+
+                if (!empty($error)) {
+                    $errors[] = $error;
+                }
+            }
         }
-        dd($constraintsConfig);
+
+        return $errors;
     }
 
     private function parseData(string $namespace, string $filename): array
@@ -48,7 +52,6 @@ final class EntityValidator implements Validator
         }
         $validationConstraints = [];
         $key = 0;
-        $validationProperty = null;
 
         unset($data[1]);
         foreach ($data as $datum) {
@@ -76,19 +79,5 @@ final class EntityValidator implements Validator
         $fileToParse = sprintf('%s/config/%s.yaml', $dir, $filename);
 
         return explode("\n", \file_get_contents($fileToParse, true));
-    }
-
-    private function getCallingClass(): ?string
-    {
-        $trace = debug_backtrace();
-        $class = $trace[1]['class'];
-
-        for ($i = 1, $iMax = count($trace); $i < $iMax; $i++) {
-            if (isset($trace[$i]) && $class !== $trace[$i]['class']) {
-                return $trace[$i]['class'];
-            }
-        }
-
-        return null;
     }
 }

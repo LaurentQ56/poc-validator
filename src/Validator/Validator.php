@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace POCIterator\Validator;
+namespace POCValidator\Validator;
 
 interface Validator
 {
-    public function validate(object $entity): void;
+    public function validate(object $entity): array;
 }

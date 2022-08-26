@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace POCIterator\Validator\Contraints;
+namespace POCValidator\Validator\Contraints;
 
 final class PropertyConstraint
 {
@@ -13,11 +13,17 @@ final class PropertyConstraint
         $this->validators = $validators;
     }
 
-    public function constraint(string $constraint, string $propertyPath, $value): void
+    /**
+     * @param string|int|string[] $value
+     * @param string|int|string[] $constraintValue
+     *
+     * @return array|void
+     */
+    public function validate(string $constraint, $constraintValue, string $propertyPath, $value)
     {
         foreach ($this->validators as $validator) {
             if ($validator->support($constraint)) {
-                $validator->constraint($constraint, $propertyPath, $value);
+                return $validator->validate($constraint, $constraintValue, $propertyPath, $value);
             }
         }
     }

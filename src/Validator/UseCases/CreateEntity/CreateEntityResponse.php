@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace POCIterator\Validator\UseCases\CreateEntity;
+namespace POCValidator\Validator\UseCases\CreateEntity;
 
-use POCIterator\Validator\Entities\Entity;
+use POCValidator\Validator\Entities\Entity;
 
 final class CreateEntityResponse
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace POCIterator\Validator\Entities;
+namespace POCValidator\Validator\Entities;
 
 final class Entity
 {

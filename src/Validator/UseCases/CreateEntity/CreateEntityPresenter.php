@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace POCIterator\Validator\UseCases\CreateEntity;
+namespace POCValidator\Validator\UseCases\CreateEntity;
 
 interface CreateEntityPresenter
 {
     public function present(CreateEntityResponse $createEntityResponse): void;
 
-    public function addError(\Throwable $exception): void;
+    public function addError(array $exception): void;
 
-    public function getError(): \Throwable;
+    public function getError(): array;
 }

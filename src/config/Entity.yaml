@@ -1,9 +1,9 @@
-POCIterator\Validator\Entities\Entity:
+POCValidator\Validator\Entities\Entity:
   properties:
     name:
       - maxLength: 50
     streetNumber:
-      - pattern: '/\d+/'
+      - pattern: /\d+/
     postalCode:
       - maxLength: 5
-      - pattern: '/\d+/'
+      - pattern: /^\d{5}$/

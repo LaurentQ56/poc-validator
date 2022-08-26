@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Validator\UseCases\CreateEntity;
 
-use POCIterator\Validator\UseCases\CreateEntity\CreateEntityRequest;
+use POCValidator\Validator\UseCases\CreateEntity\CreateEntityRequest;
 
 final class FakeCreateEntityRequest implements CreateEntityRequest
 {

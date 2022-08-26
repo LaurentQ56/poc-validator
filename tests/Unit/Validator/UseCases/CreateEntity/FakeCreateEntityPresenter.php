@@ -4,30 +4,37 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Validator\UseCases\CreateEntity;
 
-use POCIterator\Validator\UseCases\CreateEntity\CreateEntityPresenter;
-use POCIterator\Validator\UseCases\CreateEntity\CreateEntityResponse;
+use POCValidator\Validator\UseCases\CreateEntity\CreateEntityPresenter;
+use POCValidator\Validator\UseCases\CreateEntity\CreateEntityResponse;
 
 final class FakeCreateEntityPresenter implements CreateEntityPresenter
 {
     private CreateEntityResponse $response;
-    private \Throwable $errorException;
+    private array $errorException = [];
 
     public function present(CreateEntityResponse $createEntityResponse): void
     {
         $this->response = $createEntityResponse;
     }
 
-    public function response(): CreateEntityResponse
+    /**
+     * @return CreateEntityResponse|array
+     */
+    public function response()
     {
+        if (!empty($this->errorException )) {
+            return $this->getError();
+        }
+
         return $this->response;
     }
 
-    public function addError(\Throwable $exception): void
+    public function addError(array $exception): void
     {
         $this->errorException = $exception;
     }
 
-    public function getError(): \Throwable
+    public function getError(): array
     {
         return $this->errorException;
     }
